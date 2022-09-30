@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Routes, Route } from "react-router-dom";
 
 import Card from "./components/Card";
+import CardDetails from "./components/CardDetails";
 
 function App() {
   const [characters, setCharacters] = useState([]);
 
-  async function fetchCharacters() {
-    const URL = "https://rickandmortyapi.com/api/character";
+  async function fetchData(URL) {
     try {
       const response = await fetch(URL);
       const data = await response.json();
@@ -19,7 +20,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetchCharacters();
+    fetchData("https://rickandmortyapi.com/api/character");
   }, []);
 
   return (
@@ -28,11 +29,26 @@ function App() {
         <h1>React And Morty</h1>
       </Header>
       <Main>
-        <CardList>
-          {characters.map((character) => (
-            <Card key={character.id} character={character} />
-          ))}
-        </CardList>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <CardList>
+                {characters.map((character) => (
+                  <Card key={character.id} character={character} />
+                ))}
+              </CardList>
+            }
+          />
+          <Route
+            path="/details/:characterId"
+            element={
+              <CardList>
+                <CardDetails characters={characters} />
+              </CardList>
+            }
+          />
+        </Routes>
       </Main>
       <Footer>
         <NavBar>
@@ -59,6 +75,7 @@ const Header = styled.header`
 
 const Main = styled.main`
   padding: 1em;
+  margin-bottom: 4em;
 `;
 
 const CardList = styled.ul`

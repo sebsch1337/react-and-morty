@@ -1,11 +1,14 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Card({ character }) {
   return (
     <CardItem>
-      <Picture src={character.image} alt={character.name} />
-      <Name>{character.name}</Name>
-      <ShowButton>Show more</ShowButton>
+      <CharacterPicture src={character.image} alt={character.name} />
+      <CharacterName>{character.name}</CharacterName>
+      <Link to={`/details/${character.id}`}>
+        <ShowButton>Show more</ShowButton>
+      </Link>
     </CardItem>
   );
 }
@@ -20,12 +23,12 @@ const CardItem = styled.li`
   box-shadow: rgb(0 0 0) 0px 0px 8px 0px;
 `;
 
-const Picture = styled.img`
+const CharacterPicture = styled.img`
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 `;
 
-const Name = styled.h2`
+const CharacterName = styled.h2`
   margin-top: 1rem;
   text-align: center;
 `;
