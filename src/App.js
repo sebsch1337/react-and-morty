@@ -1,8 +1,27 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Card from "./components/Card";
 
 function App() {
+  const [characters, setCharacters] = useState([]);
+
+  async function fetchCharacters() {
+    const URL = "https://rickandmortyapi.com/api/character";
+    try {
+      const response = await fetch(URL);
+      const data = await response.json();
+      setCharacters(data.results);
+      return data.results;
+    } catch {
+      console.error("Can't fetch data from " + URL);
+    }
+  }
+
+  useEffect(() => {
+    fetchCharacters();
+  }, []);
+
   return (
     <div>
       <Header>
@@ -10,8 +29,9 @@ function App() {
       </Header>
       <Main>
         <CardList>
-          <Card />
-          <Card />
+          {characters.map((character) => (
+            <Card key={character.id} character={character} />
+          ))}
         </CardList>
       </Main>
       <Footer>
