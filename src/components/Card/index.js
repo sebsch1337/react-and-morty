@@ -1,14 +1,47 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 
-export default function Card({ character }) {
+export default function Card({ character, characters }) {
+  const [showDetails, setShowDetails] = useState(true);
+  let { characterId } = useParams();
+
+  if (characterId) {
+    characterId = parseInt(characterId);
+    if (characters.length === 0) return <p>Loading...</p>;
+
+    const filteredCharacter = characters.filter(
+      (character) => character.id === characterId
+    );
+    character = { ...filteredCharacter[0] };
+  }
+
   return (
     <CardItem>
       <CharacterPicture src={character.image} alt={character.name} />
       <CharacterName>{character.name}</CharacterName>
-      <Link to={`/details/${character.id}`}>
-        <ShowButton>Show more</ShowButton>
-      </Link>
+      {!characterId && (
+        <Link to={`/details/${character.id}`}>
+          <ShowButton>Show more</ShowButton>
+        </Link>
+      )}
+      {characterId && showDetails && (
+        <>
+          <CharacterDetail>Status: {character.status}</CharacterDetail>
+          <CharacterDetail>Species: {character.species}</CharacterDetail>
+          <CharacterDetail>Gender: {character.gender}</CharacterDetail>
+          <CharacterDetail>Origin: {character.origin.name}</CharacterDetail>
+          <CharacterDetail>Location: {character.location.name}</CharacterDetail>
+          <ShowButton onClick={() => setShowDetails(false)}>
+            Show less
+          </ShowButton>
+        </>
+      )}
+      {characterId && !showDetails && (
+        <ShowButton onClick={() => setShowDetails(true)}>
+          Show details
+        </ShowButton>
+      )}
     </CardItem>
   );
 }
@@ -31,6 +64,10 @@ const CharacterPicture = styled.img`
 const CharacterName = styled.h2`
   margin-top: 1rem;
   text-align: center;
+`;
+
+const CharacterDetail = styled.p`
+  padding: 0.5rem;
 `;
 
 const ShowButton = styled.button`

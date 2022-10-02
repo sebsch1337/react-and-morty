@@ -3,23 +3,21 @@ import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
 
 import Card from "./components/Card";
-import CardDetails from "./components/CardDetails";
 
 function App() {
   const [characters, setCharacters] = useState([]);
 
-  async function fetchData(URL) {
-    try {
-      const response = await fetch(URL);
-      const data = await response.json();
-      setCharacters(data.results);
-      return data.results;
-    } catch {
-      console.error("Can't fetch data from " + URL);
-    }
-  }
-
   useEffect(() => {
+    async function fetchData(URL) {
+      try {
+        const response = await fetch(URL);
+        const data = await response.json();
+        setCharacters(data.results);
+        return data.results;
+      } catch {
+        console.error("Can't fetch data from " + URL);
+      }
+    }
     fetchData("https://rickandmortyapi.com/api/character");
   }, []);
 
@@ -44,7 +42,7 @@ function App() {
             path="/details/:characterId"
             element={
               <CardList>
-                <CardDetails characters={characters} />
+                <Card characters={characters} />
               </CardList>
             }
           />
