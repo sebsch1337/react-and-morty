@@ -9,10 +9,16 @@ export default function CardWrapper({
   toggleBookmark,
   detailPage = false,
   favoritesPage = false,
+  randomPage = false,
 }) {
   let { characterId } = useParams();
   let displayCharacters = characters;
-  if (detailPage) {
+
+  if (randomPage) {
+    characterId = Math.random() * characters.length + 1;
+  }
+
+  if (detailPage || randomPage) {
     characterId = parseInt(characterId);
     displayCharacters = characters.filter(
       (character) => character.id === characterId
