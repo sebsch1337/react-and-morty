@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { Routes, Route, NavLink } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 import CardWrapper from "./components/CardWrapper";
 import { useLocalStorage } from "./hooks";
+
+import LogoSvg from "./img/logo.svg";
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -35,9 +38,9 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <Header>
-        <h1>React And Morty</h1>
+        <TitleImg src={LogoSvg} />
       </Header>
       <Main>
         <Routes>
@@ -93,33 +96,54 @@ function App() {
       <Footer>
         <NavBar>
           <NavButton to="/" end>
-            <FontAwesomeIcon icon={solid("house")} />
+            <StyledFontAwesomeIcon icon={solid("house")} size="xl" />
           </NavButton>
 
           <NavButton to="/favorites">
-            <FontAwesomeIcon icon={solid("bookmark")} />
+            <StyledFontAwesomeIcon icon={solid("paperclip")} size="xl" />
           </NavButton>
 
           <NavButton to="/random">
-            <FontAwesomeIcon icon={solid("question")} />
+            <StyledFontAwesomeIcon icon={solid("question")} size="xl" />
           </NavButton>
 
-          <NavButton to="">...</NavButton>
+          <NavButton to="">
+            <StyledFontAwesomeIcon icon={solid("gear")} size="xl" />
+          </NavButton>
         </NavBar>
       </Footer>
-    </div>
+    </>
   );
 }
 
 export default App;
 
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  &:active {
+    filter: drop-shadow(0 0 0.25rem var(--secondary-color));
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 0.25rem var(--secondary-color));
+  }
+`;
+
 const Header = styled.header`
   position: sticky;
+  top: 0;
   height: 4em;
-  background-color: hotpink;
+  background-color: var(--primary-color);
+  filter: drop-shadow(0 0 0.25rem var(--secondary-color));
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
+`;
+
+const TitleImg = styled.img`
+  position: absolute;
+  height: 95%;
+  filter: drop-shadow(0 0 0.75rem var(--secondary-color));
 `;
 
 const Main = styled.main`
@@ -130,9 +154,10 @@ const Main = styled.main`
 const Footer = styled.footer`
   position: fixed;
   bottom: 0;
-  background-color: hotpink;
   height: 4em;
   width: 100%;
+  background-color: var(--primary-color);
+  filter: drop-shadow(0 0 0.25rem var(--secondary-color));
 `;
 
 const NavBar = styled.nav`

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 import Card from "../Card";
 
@@ -74,10 +74,17 @@ const CardList = styled.ul`
 const QuestionMark = styled.span`
   display: flex;
   justify-content: center;
+  margin: 5rem;
+  color: var(--dark-color);
+  filter: drop-shadow(0 0 0.5rem var(--primary-color));
 `;
 
 const RandomizeButton = styled.button`
-  border: 2px solid black;
   padding: 1em;
-  font-size: 1.2rem;
+  font-family: "Permanent Marker";
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 5rem;
+  background-color: var(--secondary-color);
+  filter: drop-shadow(0 0 0.25rem var(--secondary-color));
 `;
