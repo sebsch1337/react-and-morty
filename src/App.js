@@ -76,6 +76,18 @@ function App() {
               />
             }
           />
+          <Route
+            path="/random"
+            element={
+              <CardWrapper
+                characters={characters}
+                setCharacters={setCharacters}
+                bookmarks={bookmarks}
+                toggleBookmark={toggleBookmark}
+                randomPage={true}
+              />
+            }
+          />
         </Routes>
       </Main>
       <Footer>
@@ -88,7 +100,10 @@ function App() {
             <FontAwesomeIcon icon={solid("bookmark")} />
           </NavButton>
 
-          <NavButton to="">...</NavButton>
+          <NavButton to="/random">
+            <FontAwesomeIcon icon={solid("question")} />
+          </NavButton>
+
           <NavButton to="">...</NavButton>
         </NavBar>
       </Footer>
