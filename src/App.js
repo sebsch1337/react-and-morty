@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, NavLink } from "react-router-dom";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid, regular } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 import CardWrapper from "./components/CardWrapper";
 import { useLocalStorage } from "./hooks";
@@ -61,14 +64,32 @@ function App() {
               />
             }
           />
+          <Route
+            path="/favorites"
+            element={
+              <CardWrapper
+                characters={characters}
+                setCharacters={setCharacters}
+                bookmarks={bookmarks}
+                toggleBookmark={toggleBookmark}
+                favoritesPage={true}
+              />
+            }
+          />
         </Routes>
       </Main>
       <Footer>
         <NavBar>
-          <NavItem>Placeholder</NavItem>
-          <NavItem>Placeholder</NavItem>
-          <NavItem>Placeholder</NavItem>
-          <NavItem>Placeholder</NavItem>
+          <NavButton to="/" end>
+            <FontAwesomeIcon icon={solid("house")} />
+          </NavButton>
+
+          <NavButton to="/favorites">
+            <FontAwesomeIcon icon={solid("bookmark")} />
+          </NavButton>
+
+          <NavButton to="">...</NavButton>
+          <NavButton to="">...</NavButton>
         </NavBar>
       </Footer>
     </div>
@@ -105,9 +126,13 @@ const NavBar = styled.nav`
   height: 100%;
 `;
 
-const NavItem = styled.button`
+const NavButton = styled(NavLink)`
   width: 100%;
   background-color: transparent;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 0;
   font-size: 1.2rem;
 `;
