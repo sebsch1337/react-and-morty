@@ -8,14 +8,21 @@ export default function CardWrapper({
   bookmarks,
   toggleBookmark,
   detailPage = false,
+  favoritesPage = false,
 }) {
   let { characterId } = useParams();
   let displayCharacters = characters;
   if (detailPage) {
     characterId = parseInt(characterId);
-    console.log(characters);
     displayCharacters = characters.filter(
       (character) => character.id === characterId
+    );
+  }
+
+  if (favoritesPage) {
+    console.log(characters, bookmarks);
+    displayCharacters = characters.filter((character) =>
+      bookmarks.find((bookmark) => bookmark === character.id)
     );
   }
 
