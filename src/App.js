@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
 
-import Card from "./components/Card";
+import CardWrapper from "./components/CardWrapper";
+import { useLocalStorage } from "./hooks";
 
 function App() {
   const [characters, setCharacters] = useState([]);
+  const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
 
   useEffect(() => {
     async function fetchData(URL) {
@@ -21,6 +23,14 @@ function App() {
     fetchData("https://rickandmortyapi.com/api/character");
   }, []);
 
+  function toggleBookmark(id) {
+    bookmarks.find((bookmarkId) => bookmarkId === id)
+      ? setBookmarks((bookmarks) =>
+          bookmarks.filter((bookmark) => bookmark !== id)
+        )
+      : setBookmarks((bookmarks) => [...bookmarks, id]);
+  }
+
   return (
     <div>
       <Header>
@@ -31,19 +41,24 @@ function App() {
           <Route
             path="/"
             element={
-              <CardList>
-                {characters.map((character) => (
-                  <Card key={character.id} character={character} />
-                ))}
-              </CardList>
+              <CardWrapper
+                characters={characters}
+                setCharacters={setCharacters}
+                bookmarks={bookmarks}
+                toggleBookmark={toggleBookmark}
+              />
             }
           />
           <Route
             path="/details/:characterId"
             element={
-              <CardList>
-                <Card characters={characters} />
-              </CardList>
+              <CardWrapper
+                characters={characters}
+                setCharacters={setCharacters}
+                bookmarks={bookmarks}
+                toggleBookmark={toggleBookmark}
+                detailPage={true}
+              />
             }
           />
         </Routes>
@@ -74,13 +89,6 @@ const Header = styled.header`
 const Main = styled.main`
   padding: 1em;
   margin-bottom: 4em;
-`;
-
-const CardList = styled.ul`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1.5rem;
 `;
 
 const Footer = styled.footer`
