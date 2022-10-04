@@ -96,19 +96,19 @@ function App() {
       <Footer>
         <NavBar>
           <NavButton to="/" end>
-            <StyledFontAwesomeIcon icon={solid("house")} size="xl" />
+            <FontAwesomeIcon icon={solid("house")} size="xl" />
           </NavButton>
 
           <NavButton to="/favorites">
-            <StyledFontAwesomeIcon icon={solid("paperclip")} size="xl" />
+            <FontAwesomeIcon icon={solid("paperclip")} size="xl" />
           </NavButton>
 
           <NavButton to="/random">
-            <StyledFontAwesomeIcon icon={solid("question")} size="xl" />
+            <FontAwesomeIcon icon={solid("question")} size="xl" />
           </NavButton>
 
           <NavButton to="">
-            <StyledFontAwesomeIcon icon={solid("gear")} size="xl" />
+            <FontAwesomeIcon icon={solid("gear")} size="xl" />
           </NavButton>
         </NavBar>
       </Footer>
@@ -117,16 +117,6 @@ function App() {
 }
 
 export default App;
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  &:active {
-    filter: drop-shadow(0 0 0.25rem var(--secondary-color));
-  }
-
-  &:hover {
-    filter: drop-shadow(0 0 0.25rem var(--secondary-color));
-  }
-`;
 
 const Header = styled.header`
   position: sticky;
@@ -175,4 +165,12 @@ const NavButton = styled(NavLink)`
   align-items: center;
   border: 0;
   font-size: 1.2rem;
+
+  &.active {
+    filter: drop-shadow(0 0 0.25rem var(--secondary-color));
+  }
+
+  &:hover {
+    filter: drop-shadow(0 0 0.25rem var(--secondary-color));
+  }
 `;
