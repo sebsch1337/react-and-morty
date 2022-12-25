@@ -13,27 +13,40 @@ import LogoSvg from "./img/logo.svg";
 
 function App() {
   const [characters, setCharacters] = useState([]);
+  const [maxPages, setMaxPages] = useState(0);
   const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
 
+  const apiUrl = "https://rickandmortyapi.com/api/character/";
+
   useEffect(() => {
-    async function fetchData(URL) {
+    async function fetchFirstPage(URL) {
       try {
         const response = await fetch(URL);
         const data = await response.json();
         setCharacters(data.results);
+        setMaxPages(data.info.pages);
         return data.results;
       } catch {
         console.error("Can't fetch data from " + URL);
       }
     }
-    fetchData("https://rickandmortyapi.com/api/character");
+    fetchFirstPage(apiUrl);
   }, []);
+
+  async function fetchNextPage(URL) {
+    try {
+      const response = await fetch(URL);
+      const data = await response.json();
+      setCharacters((prevCharacters) => [...prevCharacters, ...data.results]);
+      return data.results;
+    } catch {
+      console.error("Can't fetch data from " + URL);
+    }
+  }
 
   function toggleBookmark(id) {
     bookmarks.find((bookmarkId) => bookmarkId === id)
-      ? setBookmarks((bookmarks) =>
-          bookmarks.filter((bookmark) => bookmark !== id)
-        )
+      ? setBookmarks((bookmarks) => bookmarks.filter((bookmark) => bookmark !== id))
       : setBookmarks((bookmarks) => [...bookmarks, id]);
   }
 
@@ -52,6 +65,9 @@ function App() {
                 setCharacters={setCharacters}
                 bookmarks={bookmarks}
                 toggleBookmark={toggleBookmark}
+                fetchNextPage={fetchNextPage}
+                apiUrl={apiUrl}
+                maxPages={maxPages}
               />
             }
           />
