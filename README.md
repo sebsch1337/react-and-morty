@@ -1,97 +1,41 @@
-# React and Morty
+<p align="center"><img width="150" alt="image" src="./public/logo512.png"></p>
+<h3 align="center">REACT & MORTY</h3>
 
 > "The only way to learn a new programming language is by writing programs in it."  
 > -- <cite>Dennis Ritchie</cite>
 
-## What we are going to build
+<p align="center"><a href="https://react-and-morty-1337.vercel.app/">https://react-and-morty-1337.vercel.app/</a></p>
 
-![repo-logo](assets/react-and-morty.jpg)
+## Overview
 
-This repo contains the Rick and Morty in React exercise. Use this as a template.
+This is a React app to render characters from the Rick and Morty API. You will be able to save characters as favorites, see detailed information on a separate page and you can get random characters.
 
-We will create a React app to render characters from the Rick and Morty API. You will be able to save characters as favorites, see detailed information on a separate page and you can get random characters.
+## Used Tech Stack
 
-See a scribble for a simple overview:
-![app](assets/react-and-morty-app.png)
-See final example app [here](https://react-and-morty-eight.vercel.app/)
+- React with useState and useEffect hooks
+- React Router
+- Styled-Components
+- JavaScript ES6
+- Rick & Morty API
+- LocalStorage as data store
 
-## Learning Objectives
+## Getting Started
 
-- git & GitHub workflow
-- using [issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) and a [board](https://docs.github.com/en/issues/organizing-your-work-with-project-boards/managing-project-boards/about-project-boards) to organize tasks
-- learn to build a multipage react application
-- how to break down a big problem in solvable smaller problems
-- coding, coding, coding
+### Installation
 
-### You will use the following stack
+`npm install`
 
-- react with useState & useEffect hooks
-- styled-components
-- react-router
-- ES6 Features
-- fetching data from an external API
-- storing data in localStorage
-- logic
+### Start app
 
-## How to get started?
+`npm start`
 
-We have created some issues for you. (You will learn how to import these into your own project (after using the template))
+<a href="http://localhost:3000">http://localhost:3000</a>
 
-These issues, solved from 1 to 8, will help you to focus on one problem at a time.
-After solving everyone of them the app should be „production“ ready and running.
+## About
 
-Please read the issues carefully and if you have any questions, pls ask the coaches.
+I'm looking forward to start exciting projects with you as a 100% remote developer.
 
-If you working on an issue, pls move the issue from the todo tab in the project board to the working on tab.
-
-### Workflow step 1
-
-- use this repo as a template and create an own project in your GitHub Account
-
-- then clone the repo to your local machine
-
-- create a project on Github
-- got to the `Projects` tabs on GitHub and click `New project`
-  ![board1](assets/ram-projects.png)
-- choose `Board` as a template and click `Create`
-  ![board1](assets/ram-board.png)
-- give the project a meaningful name, like `React and Morty`
-  ![board1](assets/ram-rename-project.png)
-- go to your React and Morty repository and add the project
-  ![board1](assets/ram-add-project.png)
-- go now to the `Actions` tab
-  ![board1](assets/action.png)
-- click `Create all issues for the project` and then `Run workflow` and again `Run workflow`
-  ![board1](assets/action2.png)
-- this `action` creates all issues, you have to do
-- under the `Issues` tab you should see now the number 8 (the image is just an example)
-  ![board1](assets/issues.png)
-- Click on every Issue and add your project to it and set the status to ToDo:
-  ![board1](assets/ram-issues.png)
-- Your board should now look like this:
-  ![board1](assets/ram-board-done.png)
-
-### Workflow step 2
-
-- after doing [Workflow step 1](#workflow-step-1):
-- read the issue carefully, best practice would be to start with #1 and do everything whats in there
-
-- When you are ready, push the branch to Github and create a pull request, write a short description what was done here and then merge the branch into main.
-
-- Move the issue you are have finished from the „in progress“ tab to the „done“ tab.
-
-- Pull the main from the remote (GitHub) to your local machine.
-
-- Start over with the next issue.
-
-## Recources:
-
-- [Rick and Morty API Docs](https://rickandmortyapi.com/documentation/#rest)
-- [useState](https://reactwithhooks.netlify.app/docs/hooks-state.html)
-- [useEffect](https://reactwithhooks.netlify.app/docs/hooks-effect.html)
-- [react-router](https://reactrouter.com/docs/en/v6/getting-started/tutorial)
-
-HAVE FUN
+You can find more infos about me and my tech stack on my GitHub page.
 
 > "Wubba lubba dub dub"  
 > -- <cite>Rick Sanchez</cite>
