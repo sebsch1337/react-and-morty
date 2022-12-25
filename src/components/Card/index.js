@@ -1,17 +1,11 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import bookmarkedSvg from "../../img/bookmarked.svg";
 import bookmarkAddSvg from "../../img/bookmark_add.svg";
 
-export default function Card({
-  character,
-  toggleBookmark,
-  bookmarked,
-  detailPage,
-}) {
-  const [showDetails, setShowDetails] = useState(true);
+export default function Card({ character, toggleBookmark, bookmarked, detailPage }) {
+  const navigate = useNavigate();
 
   return (
     <CardItem>
@@ -22,7 +16,7 @@ export default function Card({
           <ShowButton>Show more</ShowButton>
         </Link>
       )}
-      {detailPage && showDetails && (
+      {detailPage && (
         <CharacterDetailSection>
           <CharacterDetailFull>
             <DetailTextFat>Status</DetailTextFat>
@@ -49,21 +43,11 @@ export default function Card({
             <br />
             {character.location.name}
           </CharacterDetailFull>
-          <ShowButton onClick={() => setShowDetails(false)}>
-            Show less
-          </ShowButton>
+          <ShowButton onClick={() => navigate(-1)}>Show less</ShowButton>
         </CharacterDetailSection>
       )}
-      {detailPage && !showDetails && (
-        <ShowButton onClick={() => setShowDetails(true)}>
-          Show details
-        </ShowButton>
-      )}
       <Bookmark onClick={toggleBookmark} bookmarked={bookmarked}>
-        <BookmarkImg
-          src={bookmarked ? bookmarkedSvg : bookmarkAddSvg}
-          alt="Bookmarks"
-        />
+        <BookmarkImg src={bookmarked ? bookmarkedSvg : bookmarkAddSvg} alt="Bookmarks" />
       </Bookmark>
     </CardItem>
   );
