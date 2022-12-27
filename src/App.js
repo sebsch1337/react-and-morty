@@ -13,6 +13,7 @@ import LogoSvg from "./img/logo.svg";
 
 function App() {
   const [characters, setCharacters] = useState([]);
+  const [bookmarkedCharacters, setBookmarkedCharacters] = useState([]);
   const [maxPages, setMaxPages] = useState(0);
   const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
 
@@ -32,6 +33,24 @@ function App() {
     }
     fetchFirstPage(apiUrl);
   }, []);
+
+  useEffect(() => {
+    if (bookmarks.length > 0) {
+      async function fetchBookmarkedCharacters(URL) {
+        try {
+          const response = await fetch(URL);
+          const data = await response.json();
+          setBookmarkedCharacters(data);
+          return data;
+        } catch {
+          console.error("Can't fetch data from " + URL);
+        }
+      }
+      fetchBookmarkedCharacters("https://rickandmortyapi.com/api/character/[" + bookmarks.join(",") + "]");
+    } else {
+      setBookmarkedCharacters([]);
+    }
+  }, [bookmarks]);
 
   async function fetchNextPage(URL) {
     try {
@@ -87,7 +106,7 @@ function App() {
             path="/favorites"
             element={
               <CardWrapper
-                characters={characters}
+                characters={bookmarkedCharacters}
                 setCharacters={setCharacters}
                 bookmarks={bookmarks}
                 toggleBookmark={toggleBookmark}

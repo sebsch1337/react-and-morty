@@ -34,12 +34,6 @@ export default function CardWrapper({
     );
   }
 
-  if (favoritesPage) {
-    displayCharacters = characters.filter((character) =>
-      bookmarks.find((bookmark) => bookmark === character.id)
-    );
-  }
-
   return (
     <>
       <CardList randomPage={randomPage}>
