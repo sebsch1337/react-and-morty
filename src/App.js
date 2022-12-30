@@ -11,6 +11,7 @@ import { useLocalStorage } from "./hooks";
 
 import LogoSvg from "./img/logo.svg";
 import Characters from "./pages/Characters";
+import Favorites from "./pages/Favorites";
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -110,12 +111,10 @@ function App() {
             <Route
               path="/favorites"
               element={
-                <CardWrapper
+                <Favorites
                   characters={bookmarkedCharacters}
-                  setCharacters={setCharacters}
                   bookmarks={bookmarks}
                   toggleBookmark={toggleBookmark}
-                  favoritesPage={true}
                 />
               }
             />
