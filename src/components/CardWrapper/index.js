@@ -16,25 +16,31 @@ export default function CardWrapper({
   toggleBookmark,
   fetchNextPage,
   apiUrl,
-  maxPages,
+  charactersInfo,
   detailPage = false,
   favoritesPage = false,
   randomPage = false,
+  getSingleCharacter,
 }) {
   let { characterId } = useParams();
   characterId = parseInt(characterId);
+
+  const [randomCharacter, setRandomCharacter] = useState([]);
+
+  const getRandomCharacter = async () => {
+    setRandomCharacter([
+      await getSingleCharacter(
+        "https://rickandmortyapi.com/api/character/",
+        parseInt(Math.random() * charactersInfo.count)
+      ),
+    ]);
+  };
+
   let displayCharacters = characters;
-
-  const [randomId, setRandomId] = useState(0);
-
-  const createRandomId = () => parseInt(Math.random() * characters.length + 1);
-
   if (detailPage) {
-    displayCharacters = [
-      [...characters, ...bookmarkedCharacters].find(({ id }) => id === (randomPage ? randomId : characterId)),
-    ];
+    displayCharacters = [[...characters, ...bookmarkedCharacters].find(({ id }) => id === characterId)];
   } else if (randomPage) {
-    displayCharacters = characters.filter(({ id }) => id === randomId);
+    displayCharacters = randomCharacter;
   }
 
   return (
@@ -49,15 +55,13 @@ export default function CardWrapper({
             detailPage={detailPage}
           />
         ))}
-        {randomPage && randomId === 0 && (
+        {randomPage && randomCharacter.length === 0 && (
           <QuestionMark>
             <FontAwesomeIcon icon={solid("question")} size="10x" />
           </QuestionMark>
         )}
         {randomPage && (
-          <RandomizeButton onClick={() => setRandomId(createRandomId())}>
-            Get random character
-          </RandomizeButton>
+          <RandomizeButton onClick={() => getRandomCharacter()}>Get random character</RandomizeButton>
         )}
         {favoritesPage && displayCharacters.length === 0 && <Info>Go back and get some bookmarks!</Info>}
       </CardList>
@@ -65,7 +69,7 @@ export default function CardWrapper({
         <GiveMeMoreWrapper>
           <GiveMeMoreButton
             onClick={() => fetchNextPage(apiUrl + "?page=" + nextPage++)}
-            disabled={maxPages + 1 === nextPage}
+            disabled={charactersInfo.pages + 1 === nextPage}
           >
             Give Me More
           </GiveMeMoreButton>
