@@ -10,6 +10,7 @@ import CardWrapper from "./components/CardWrapper";
 import { useLocalStorage } from "./hooks";
 
 import LogoSvg from "./img/logo.svg";
+import Characters from "./pages/Characters";
 
 function App() {
   const [characters, setCharacters] = useState([]);
@@ -85,61 +86,55 @@ function App() {
         <TitleImg src={LogoSvg} />
       </Header>
       <Main>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <CardWrapper
-                characters={characters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                fetchNextPage={fetchNextPage}
-                apiUrl={apiUrl}
-                charactersInfo={charactersInfo}
-              />
-            }
-          />
-          <Route
-            path="/details/:characterId"
-            element={
-              <CardWrapper
-                characters={characters}
-                bookmarkedCharacters={bookmarkedCharacters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                detailPage={true}
-              />
-            }
-          />
-          <Route
-            path="/favorites"
-            element={
-              <CardWrapper
-                characters={bookmarkedCharacters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                favoritesPage={true}
-              />
-            }
-          />
-          <Route
-            path="/random"
-            element={
-              <CardWrapper
-                characters={characters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                randomPage={true}
-                getSingleCharacter={getSingleCharacter}
-                charactersInfo={charactersInfo}
-              />
-            }
-          />
-        </Routes>
+        <CardList>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Characters
+                  characters={characters}
+                  bookmarks={bookmarks}
+                  toggleBookmark={toggleBookmark}
+                  fetchNextPage={fetchNextPage}
+                  apiUrl={apiUrl}
+                  charactersInfo={charactersInfo}
+                />
+              }
+            />
+            <Route
+              path="/details/:characterId"
+              element={
+                <CardWrapper characters={[...characters, ...bookmarkedCharacters]} detailPage={true} />
+              }
+            />
+            <Route
+              path="/favorites"
+              element={
+                <CardWrapper
+                  characters={bookmarkedCharacters}
+                  setCharacters={setCharacters}
+                  bookmarks={bookmarks}
+                  toggleBookmark={toggleBookmark}
+                  favoritesPage={true}
+                />
+              }
+            />
+            <Route
+              path="/random"
+              element={
+                <CardWrapper
+                  characters={characters}
+                  setCharacters={setCharacters}
+                  bookmarks={bookmarks}
+                  toggleBookmark={toggleBookmark}
+                  randomPage={true}
+                  getSingleCharacter={getSingleCharacter}
+                  charactersInfo={charactersInfo}
+                />
+              }
+            />
+          </Routes>
+        </CardList>
       </Main>
       <Footer>
         <NavBar>
@@ -187,6 +182,15 @@ const TitleImg = styled.img`
 const Main = styled.main`
   padding: 1em;
   margin-bottom: 4em;
+`;
+
+const CardList = styled.ul`
+  display: flex;
+  flex-direction: ${({ randomPage }) => (randomPage ? "column" : "row")};
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 `;
 
 const Footer = styled.footer`

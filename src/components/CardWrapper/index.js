@@ -11,9 +11,9 @@ let nextPage = 2;
 
 export default function CardWrapper({
   characters,
-  bookmarkedCharacters,
-  bookmarks,
-  toggleBookmark,
+  bookmarkedCharacters = [],
+  bookmarks = [],
+  toggleBookmark = "",
   fetchNextPage,
   apiUrl,
   charactersInfo,
@@ -37,16 +37,17 @@ export default function CardWrapper({
   };
 
   let displayCharacters = characters;
-  if (detailPage) {
-    displayCharacters = [[...characters, ...bookmarkedCharacters].find(({ id }) => id === characterId)];
-  } else if (randomPage) {
+  // if (detailPage) {
+  //   displayCharacters = [[...characters, ...bookmarkedCharacters].find(({ id }) => id === characterId)];
+  // } else
+  if (randomPage) {
     displayCharacters = randomCharacter;
   }
 
   return (
     <>
       <CardList randomPage={randomPage}>
-        {displayCharacters.map((character) => (
+        {characters.map((character) => (
           <Card
             key={character.id}
             character={character}
@@ -55,6 +56,11 @@ export default function CardWrapper({
             detailPage={detailPage}
           />
         ))}
+        {console.log(characters)}
+        {detailPage &&
+          [characters.find(({ id }) => id === characterId)].map((character) => (
+            <Card key={character.id} character={character} detailPage={detailPage} />
+          ))}
         {randomPage && randomCharacter.length === 0 && (
           <QuestionMark>
             <FontAwesomeIcon icon={solid("question")} size="10x" />
