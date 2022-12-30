@@ -14,7 +14,7 @@ import LogoSvg from "./img/logo.svg";
 function App() {
   const [characters, setCharacters] = useState([]);
   const [bookmarkedCharacters, setBookmarkedCharacters] = useState([]);
-  const [maxPages, setMaxPages] = useState(0);
+  const [charactersInfo, setCharactersInfo] = useState({});
   const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
 
   const apiUrl = "https://rickandmortyapi.com/api/character/";
@@ -25,7 +25,7 @@ function App() {
         const response = await fetch(URL);
         const data = await response.json();
         setCharacters(data.results);
-        setMaxPages(data.info.pages);
+        setCharactersInfo(data.info);
         return data.results;
       } catch {
         console.error("Can't fetch data from " + URL);
@@ -63,6 +63,16 @@ function App() {
     }
   }
 
+  async function getSingleCharacter(URL, id) {
+    try {
+      const response = await fetch(URL + id);
+      const data = await response.json();
+      return data;
+    } catch {
+      console.error("Can't fetch data from " + URL + id);
+    }
+  }
+
   function toggleBookmark(id) {
     bookmarks.find((bookmarkId) => bookmarkId === id)
       ? setBookmarks((bookmarks) => bookmarks.filter((bookmark) => bookmark !== id))
@@ -86,7 +96,7 @@ function App() {
                 toggleBookmark={toggleBookmark}
                 fetchNextPage={fetchNextPage}
                 apiUrl={apiUrl}
-                maxPages={maxPages}
+                charactersInfo={charactersInfo}
               />
             }
           />
@@ -124,6 +134,8 @@ function App() {
                 bookmarks={bookmarks}
                 toggleBookmark={toggleBookmark}
                 randomPage={true}
+                getSingleCharacter={getSingleCharacter}
+                charactersInfo={charactersInfo}
               />
             }
           />
