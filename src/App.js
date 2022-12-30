@@ -1,21 +1,25 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import LogoSvg from "./img/logo.svg";
+
+import { useEffect, useState } from "react";
+import { useLocalStorage } from "./hooks";
 
 import { Routes, Route, NavLink } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import Characters from "./pages/Characters";
+import Favorites from "./pages/Favorites";
+import Randomize from "./pages/Randomize";
+import Details from "./pages/Details";
+import Settings from "./pages/Settings";
 
-import CardWrapper from "./components/CardWrapper";
-import { useLocalStorage } from "./hooks";
-
-import LogoSvg from "./img/logo.svg";
-
-function App() {
+export default function App() {
   const [characters, setCharacters] = useState([]);
   const [bookmarkedCharacters, setBookmarkedCharacters] = useState([]);
   const [charactersInfo, setCharactersInfo] = useState({});
   const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
+  const [randomCharacter, setRandomCharacter] = useState([]);
 
   const apiUrl = "https://rickandmortyapi.com/api/character/";
 
@@ -46,11 +50,25 @@ function App() {
           console.error("Can't fetch data from " + URL);
         }
       }
-      fetchBookmarkedCharacters("https://rickandmortyapi.com/api/character/[" + bookmarks.join(",") + "]");
+      fetchBookmarkedCharacters(apiUrl + "[" + bookmarks.join(",") + "]");
     } else {
       setBookmarkedCharacters([]);
     }
   }, [bookmarks]);
+
+  async function getSingleCharacter(URL, id) {
+    try {
+      const response = await fetch(URL + id);
+      const data = await response.json();
+      return data;
+    } catch {
+      console.error("Can't fetch data from " + URL + id);
+    }
+  }
+
+  async function getRandomCharacter() {
+    setRandomCharacter(await getSingleCharacter(apiUrl, parseInt(Math.random() * charactersInfo.count)));
+  }
 
   async function fetchNextPage(URL) {
     try {
@@ -60,16 +78,6 @@ function App() {
       return data.results;
     } catch {
       console.error("Can't fetch data from " + URL);
-    }
-  }
-
-  async function getSingleCharacter(URL, id) {
-    try {
-      const response = await fetch(URL + id);
-      const data = await response.json();
-      return data;
-    } catch {
-      console.error("Can't fetch data from " + URL + id);
     }
   }
 
@@ -85,61 +93,49 @@ function App() {
         <TitleImg src={LogoSvg} />
       </Header>
       <Main>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <CardWrapper
-                characters={characters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                fetchNextPage={fetchNextPage}
-                apiUrl={apiUrl}
-                charactersInfo={charactersInfo}
-              />
-            }
-          />
-          <Route
-            path="/details/:characterId"
-            element={
-              <CardWrapper
-                characters={characters}
-                bookmarkedCharacters={bookmarkedCharacters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                detailPage={true}
-              />
-            }
-          />
-          <Route
-            path="/favorites"
-            element={
-              <CardWrapper
-                characters={bookmarkedCharacters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                favoritesPage={true}
-              />
-            }
-          />
-          <Route
-            path="/random"
-            element={
-              <CardWrapper
-                characters={characters}
-                setCharacters={setCharacters}
-                bookmarks={bookmarks}
-                toggleBookmark={toggleBookmark}
-                randomPage={true}
-                getSingleCharacter={getSingleCharacter}
-                charactersInfo={charactersInfo}
-              />
-            }
-          />
-        </Routes>
+        <CardList>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Characters
+                  characters={characters}
+                  bookmarks={bookmarks}
+                  toggleBookmark={toggleBookmark}
+                  fetchNextPage={fetchNextPage}
+                  apiUrl={apiUrl}
+                  charactersInfo={charactersInfo}
+                />
+              }
+            />
+            <Route
+              path="/details/:characterId"
+              element={<Details characters={[...characters, ...bookmarkedCharacters, randomCharacter]} />}
+            />
+            <Route
+              path="/favorites"
+              element={
+                <Favorites
+                  characters={bookmarkedCharacters}
+                  bookmarks={bookmarks}
+                  toggleBookmark={toggleBookmark}
+                />
+              }
+            />
+            <Route
+              path="/random"
+              element={
+                <Randomize
+                  bookmarks={bookmarks}
+                  toggleBookmark={toggleBookmark}
+                  randomCharacter={randomCharacter}
+                  getRandomCharacter={getRandomCharacter}
+                />
+              }
+            />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </CardList>
       </Main>
       <Footer>
         <NavBar>
@@ -155,7 +151,7 @@ function App() {
             <FontAwesomeIcon icon={solid("question")} size="xl" />
           </NavButton>
 
-          <NavButton to="">
+          <NavButton to="/settings">
             <FontAwesomeIcon icon={solid("gear")} size="xl" />
           </NavButton>
         </NavBar>
@@ -163,8 +159,6 @@ function App() {
     </>
   );
 }
-
-export default App;
 
 const Header = styled.header`
   position: sticky;
@@ -187,6 +181,14 @@ const TitleImg = styled.img`
 const Main = styled.main`
   padding: 1em;
   margin-bottom: 4em;
+`;
+
+const CardList = styled.ul`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 `;
 
 const Footer = styled.footer`
