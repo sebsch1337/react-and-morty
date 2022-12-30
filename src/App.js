@@ -12,6 +12,7 @@ import Characters from "./pages/Characters";
 import Favorites from "./pages/Favorites";
 import Randomize from "./pages/Randomize";
 import Details from "./pages/Details";
+import Settings from "./pages/Settings";
 
 export default function App() {
   const [characters, setCharacters] = useState([]);
@@ -132,6 +133,7 @@ export default function App() {
                 />
               }
             />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </CardList>
       </Main>
@@ -149,7 +151,7 @@ export default function App() {
             <FontAwesomeIcon icon={solid("question")} size="xl" />
           </NavButton>
 
-          <NavButton to="">
+          <NavButton to="/settings">
             <FontAwesomeIcon icon={solid("gear")} size="xl" />
           </NavButton>
         </NavBar>
