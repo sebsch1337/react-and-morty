@@ -1,5 +1,4 @@
-import styled from "styled-components";
-
+import Info from "../../components/Info";
 import Card from "../../components/Card";
 
 export default function Favorites({ characters, bookmarks, toggleBookmark }) {
@@ -17,7 +16,3 @@ export default function Favorites({ characters, bookmarks, toggleBookmark }) {
     </>
   );
 }
-
-const Info = styled.p`
-  color: var(--primary-color);
-`;
