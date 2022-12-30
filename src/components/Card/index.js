@@ -46,9 +46,11 @@ export default function Card({ character, toggleBookmark, bookmarked, detailPage
           <ShowButton onClick={() => navigate(-1)}>Show less</ShowButton>
         </CharacterDetailSection>
       )}
-      <Bookmark onClick={toggleBookmark} bookmarked={bookmarked}>
-        <BookmarkImg src={bookmarked ? bookmarkedSvg : bookmarkAddSvg} alt="Bookmarks" />
-      </Bookmark>
+      {!detailPage && (
+        <Bookmark onClick={toggleBookmark} bookmarked={bookmarked}>
+          <BookmarkImg src={bookmarked ? bookmarkedSvg : bookmarkAddSvg} alt="Bookmarks" />
+        </Bookmark>
+      )}
     </CardItem>
   );
 }
