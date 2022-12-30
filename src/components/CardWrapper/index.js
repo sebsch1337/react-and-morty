@@ -56,8 +56,9 @@ export default function CardWrapper({
             Get random character
           </RandomizeButton>
         )}
+        {favoritesPage && displayCharacters.length === 0 && <Info>Go back and get some bookmarks!</Info>}
       </CardList>
-      {!detailPage && !favoritesPage && !randomPage && (
+      {characters.length > 0 && !detailPage && !favoritesPage && !randomPage && (
         <GiveMeMoreWrapper>
           <GiveMeMoreButton
             onClick={() => fetchNextPage(apiUrl + "?page=" + nextPage++)}
@@ -70,6 +71,10 @@ export default function CardWrapper({
     </>
   );
 }
+
+const Info = styled.p`
+  color: var(--primary-color);
+`;
 
 const CardList = styled.ul`
   display: flex;
