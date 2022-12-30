@@ -22,16 +22,19 @@ export default function CardWrapper({
   randomPage = false,
 }) {
   let { characterId } = useParams();
+  characterId = parseInt(characterId);
   let displayCharacters = characters;
 
   const [randomId, setRandomId] = useState(0);
 
-  const getRandomNumber = () => parseInt(Math.random() * characters.length + 1);
+  const createRandomId = () => parseInt(Math.random() * characters.length + 1);
 
-  if (detailPage || randomPage) {
-    characterId = parseInt(characterId);
-    const mergedCharacters = [...characters, ...bookmarkedCharacters];
-    displayCharacters = [mergedCharacters.find(({ id }) => id === (randomPage ? randomId : characterId))];
+  if (detailPage) {
+    displayCharacters = [
+      [...characters, ...bookmarkedCharacters].find(({ id }) => id === (randomPage ? randomId : characterId)),
+    ];
+  } else if (randomPage) {
+    displayCharacters = characters.filter(({ id }) => id === randomId);
   }
 
   return (
@@ -52,7 +55,7 @@ export default function CardWrapper({
           </QuestionMark>
         )}
         {randomPage && (
-          <RandomizeButton onClick={() => setRandomId(getRandomNumber())}>
+          <RandomizeButton onClick={() => setRandomId(createRandomId())}>
             Get random character
           </RandomizeButton>
         )}
@@ -94,9 +97,12 @@ const QuestionMark = styled.span`
 `;
 
 const RandomizeButton = styled.button`
-  padding: 1em;
+  width: 20rem;
+  justify-self: center;
+  align-self: center;
+  padding: 0.8rem;
   font-family: "Permanent Marker";
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border: none;
   border-radius: 5rem;
   background-color: var(--secondary-color);
