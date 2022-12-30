@@ -12,12 +12,14 @@ import { useLocalStorage } from "./hooks";
 import LogoSvg from "./img/logo.svg";
 import Characters from "./pages/Characters";
 import Favorites from "./pages/Favorites";
+import Randomize from "./pages/Randomize";
 
 function App() {
   const [characters, setCharacters] = useState([]);
   const [bookmarkedCharacters, setBookmarkedCharacters] = useState([]);
   const [charactersInfo, setCharactersInfo] = useState({});
   const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
+  const [randomCharacter, setRandomCharacter] = useState([]);
 
   const apiUrl = "https://rickandmortyapi.com/api/character/";
 
@@ -48,11 +50,25 @@ function App() {
           console.error("Can't fetch data from " + URL);
         }
       }
-      fetchBookmarkedCharacters("https://rickandmortyapi.com/api/character/[" + bookmarks.join(",") + "]");
+      fetchBookmarkedCharacters(apiUrl + "[" + bookmarks.join(",") + "]");
     } else {
       setBookmarkedCharacters([]);
     }
   }, [bookmarks]);
+
+  async function getSingleCharacter(URL, id) {
+    try {
+      const response = await fetch(URL + id);
+      const data = await response.json();
+      return data;
+    } catch {
+      console.error("Can't fetch data from " + URL + id);
+    }
+  }
+
+  async function getRandomCharacter() {
+    setRandomCharacter(await getSingleCharacter(apiUrl, parseInt(Math.random() * charactersInfo.count)));
+  }
 
   async function fetchNextPage(URL) {
     try {
@@ -62,16 +78,6 @@ function App() {
       return data.results;
     } catch {
       console.error("Can't fetch data from " + URL);
-    }
-  }
-
-  async function getSingleCharacter(URL, id) {
-    try {
-      const response = await fetch(URL + id);
-      const data = await response.json();
-      return data;
-    } catch {
-      console.error("Can't fetch data from " + URL + id);
     }
   }
 
@@ -121,14 +127,11 @@ function App() {
             <Route
               path="/random"
               element={
-                <CardWrapper
-                  characters={characters}
-                  setCharacters={setCharacters}
+                <Randomize
                   bookmarks={bookmarks}
                   toggleBookmark={toggleBookmark}
-                  randomPage={true}
-                  getSingleCharacter={getSingleCharacter}
-                  charactersInfo={charactersInfo}
+                  randomCharacter={randomCharacter}
+                  getRandomCharacter={getRandomCharacter}
                 />
               }
             />
@@ -185,7 +188,6 @@ const Main = styled.main`
 
 const CardList = styled.ul`
   display: flex;
-  flex-direction: ${({ randomPage }) => (randomPage ? "column" : "row")};
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
