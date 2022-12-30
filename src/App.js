@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
+import LogoSvg from "./img/logo.svg";
+
+import { useEffect, useState } from "react";
+import { useLocalStorage } from "./hooks";
 
 import { Routes, Route, NavLink } from "react-router-dom";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
-
-import CardWrapper from "./components/CardWrapper";
-import { useLocalStorage } from "./hooks";
-
-import LogoSvg from "./img/logo.svg";
 import Characters from "./pages/Characters";
 import Favorites from "./pages/Favorites";
 import Randomize from "./pages/Randomize";
+import Details from "./pages/Details";
 
-function App() {
+export default function App() {
   const [characters, setCharacters] = useState([]);
   const [bookmarkedCharacters, setBookmarkedCharacters] = useState([]);
   const [charactersInfo, setCharactersInfo] = useState({});
@@ -110,9 +109,7 @@ function App() {
             />
             <Route
               path="/details/:characterId"
-              element={
-                <CardWrapper characters={[...characters, ...bookmarkedCharacters]} detailPage={true} />
-              }
+              element={<Details characters={[...characters, ...bookmarkedCharacters, randomCharacter]} />}
             />
             <Route
               path="/favorites"
@@ -160,8 +157,6 @@ function App() {
     </>
   );
 }
-
-export default App;
 
 const Header = styled.header`
   position: sticky;
