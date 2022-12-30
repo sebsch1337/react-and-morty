@@ -11,6 +11,7 @@ let nextPage = 2;
 
 export default function CardWrapper({
   characters,
+  bookmarkedCharacters,
   bookmarks,
   toggleBookmark,
   fetchNextPage,
@@ -29,9 +30,8 @@ export default function CardWrapper({
 
   if (detailPage || randomPage) {
     characterId = parseInt(characterId);
-    displayCharacters = characters.filter(
-      (character) => character.id === (randomPage ? randomId : characterId)
-    );
+    const mergedCharacters = [...characters, ...bookmarkedCharacters];
+    displayCharacters = [mergedCharacters.find(({ id }) => id === (randomPage ? randomId : characterId))];
   }
 
   return (
