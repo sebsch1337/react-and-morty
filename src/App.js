@@ -95,6 +95,7 @@ function App() {
             element={
               <CardWrapper
                 characters={characters}
+                bookmarkedCharacters={bookmarkedCharacters}
                 setCharacters={setCharacters}
                 bookmarks={bookmarks}
                 toggleBookmark={toggleBookmark}
@@ -156,7 +157,7 @@ export default App;
 const Header = styled.header`
   position: sticky;
   top: 0;
-  height: 4em;
+  height: 4rem;
   background-color: var(--primary-color);
   filter: drop-shadow(0 0 0.25rem var(--secondary-color));
   display: flex;

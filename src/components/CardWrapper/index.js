@@ -11,6 +11,7 @@ let nextPage = 2;
 
 export default function CardWrapper({
   characters,
+  bookmarkedCharacters,
   bookmarks,
   toggleBookmark,
   fetchNextPage,
@@ -21,17 +22,19 @@ export default function CardWrapper({
   randomPage = false,
 }) {
   let { characterId } = useParams();
+  characterId = parseInt(characterId);
   let displayCharacters = characters;
 
   const [randomId, setRandomId] = useState(0);
 
-  const getRandomNumber = () => parseInt(Math.random() * characters.length + 1);
+  const createRandomId = () => parseInt(Math.random() * characters.length + 1);
 
-  if (detailPage || randomPage) {
-    characterId = parseInt(characterId);
-    displayCharacters = characters.filter(
-      (character) => character.id === (randomPage ? randomId : characterId)
-    );
+  if (detailPage) {
+    displayCharacters = [
+      [...characters, ...bookmarkedCharacters].find(({ id }) => id === (randomPage ? randomId : characterId)),
+    ];
+  } else if (randomPage) {
+    displayCharacters = characters.filter(({ id }) => id === randomId);
   }
 
   return (
@@ -52,12 +55,13 @@ export default function CardWrapper({
           </QuestionMark>
         )}
         {randomPage && (
-          <RandomizeButton onClick={() => setRandomId(getRandomNumber())}>
+          <RandomizeButton onClick={() => setRandomId(createRandomId())}>
             Get random character
           </RandomizeButton>
         )}
+        {favoritesPage && displayCharacters.length === 0 && <Info>Go back and get some bookmarks!</Info>}
       </CardList>
-      {!detailPage && !favoritesPage && !randomPage && (
+      {characters.length > 0 && !detailPage && !favoritesPage && !randomPage && (
         <GiveMeMoreWrapper>
           <GiveMeMoreButton
             onClick={() => fetchNextPage(apiUrl + "?page=" + nextPage++)}
@@ -70,6 +74,10 @@ export default function CardWrapper({
     </>
   );
 }
+
+const Info = styled.p`
+  color: var(--primary-color);
+`;
 
 const CardList = styled.ul`
   display: flex;
@@ -89,9 +97,12 @@ const QuestionMark = styled.span`
 `;
 
 const RandomizeButton = styled.button`
-  padding: 1em;
+  width: 20rem;
+  justify-self: center;
+  align-self: center;
+  padding: 0.8rem;
   font-family: "Permanent Marker";
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border: none;
   border-radius: 5rem;
   background-color: var(--secondary-color);
