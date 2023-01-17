@@ -20,6 +20,7 @@ export default function App() {
   const [charactersInfo, setCharactersInfo] = useState({});
   const [bookmarks, setBookmarks] = useLocalStorage("r-a-m-bookmarks", []);
   const [randomCharacter, setRandomCharacter] = useState([]);
+  const [detailCharacter, setDetailCharacter] = useState([]);
 
   const apiUrl = "https://rickandmortyapi.com/api/character/";
 
@@ -56,7 +57,7 @@ export default function App() {
     }
   }, [bookmarks]);
 
-  async function getSingleCharacter(URL, id) {
+  async function getSingleCharacter(id, URL = apiUrl) {
     try {
       const response = await fetch(URL + id);
       const data = await response.json();
@@ -66,8 +67,13 @@ export default function App() {
     }
   }
 
+  async function setSingleCharacter(id) {
+    console.log("id", id);
+    setDetailCharacter(await getSingleCharacter(id));
+  }
+
   async function getRandomCharacter() {
-    setRandomCharacter(await getSingleCharacter(apiUrl, parseInt(Math.random() * charactersInfo.count)));
+    setRandomCharacter(await getSingleCharacter(parseInt(Math.random() * charactersInfo.count)));
   }
 
   async function fetchNextPage(URL) {
@@ -110,7 +116,7 @@ export default function App() {
             />
             <Route
               path="/details/:characterId"
-              element={<Details characters={[...characters, ...bookmarkedCharacters, randomCharacter]} />}
+              element={<Details character={detailCharacter} setSingleCharacter={setSingleCharacter} />}
             />
             <Route
               path="/favorites"
