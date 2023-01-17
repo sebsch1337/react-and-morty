@@ -68,7 +68,6 @@ export default function App() {
   }
 
   async function setSingleCharacter(id) {
-    console.log("id", id);
     setDetailCharacter(await getSingleCharacter(id));
   }
 
