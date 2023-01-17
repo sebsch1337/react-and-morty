@@ -8,8 +8,10 @@ export default function Details({ character = {}, setSingleCharacter }) {
   characterId = parseInt(characterId);
 
   useEffect(() => {
-    if (characterId) setSingleCharacter(characterId);
-  });
+    if (characterId) {
+      setSingleCharacter(characterId);
+    }
+  }, [characterId]);
 
   return character.id === characterId ? (
     <Card key={character.id} character={character} detailPage={true} />
